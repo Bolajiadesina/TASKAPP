@@ -1,0 +1,88 @@
+<div class="container">
+    <h2>Delete Task</h2>
+    <form (ngSubmit)="getTaskByIdForDelete()">
+        <div class="form-group">
+            <label for="taskId">Task ID:</label>
+            <input class="input-field" type="number" id="taskId" name="taskId" [(ngModel)]="taskId" required>
+        </div>
+        <button type="submit" class="button">Delete Task</button>
+    </form>
+    <div>
+        <button class="button" (click)="goToHome()">Back to Home</button>
+    </div>
+</div>
+
+<ng-template #detailsModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Task Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div>
+            <label class="modal-label">Task Id:</label>
+            <p>{{ task.id }}</p>
+        </div>
+        <div>
+            <label class="modal-label">Task Name:</label>
+            <p>{{ task.taskName }}</p>
+        </div>
+        <div>
+            <label class="modal-label">Task Description:</label>
+            <p>{{ task.taskDescription }}</p>
+        </div>
+        <div>
+            <label class="modal-label">Task Status:</label>
+            <p>{{ task.taskStatus }}</p>
+        </div>
+        <div>
+            <label class="modal-label">Due Date:</label>
+            <p>{{ task.taskDueDate }}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" (click)="deleteTask(task.id)">Delete</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Cancel</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmDeleteModal let-modal>
+    <!-- Modal content here, e.g.: -->
+    <div class="modal-header">
+        <h4 class="modal-title">Delete Task</h4>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete task "{{ task?.taskName }}"?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" (click)="deleteTask(task.id)">Delete</button>
+        <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    </div>
+</ng-template>
+
+
+<ng-template #successModal let-modal>
+    <!-- Modal content here, e.g.: -->
+    <div class="modal-header">
+        <h4 class="modal-title">Delete Task</h4>
+    </div>
+    <div class="modal-body">
+        <p>{{ responseMessage }}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeAllModals()">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #failedModal let-modal>
+    <!-- Modal content here, e.g.: -->
+    <div class="modal-header">
+        <h4 class="modal-title">Delete Task</h4>
+    </div>
+    <div class="modal-body">
+        <p>{{ responseMessage }}</p>
+    </div>
+    <div class="modal-footer">
+      
+        <button class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+    </div>
+</ng-template>

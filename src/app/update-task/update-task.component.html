@@ -1,0 +1,22 @@
+<div class="container">
+    <h2>Update Task</h2>
+    <form>
+        <div class="form-group">
+            <label for="taskId">Task ID:</label>
+            <input class="input-field" type="text" id="taskId" name="taskId">
+        </div>
+        <div class="form-group">
+            <label for="taskName">Task Name:</label>
+            <input class="input-field" type="text" id="taskName" name="taskName">
+        </div>
+        <div class="form-group">
+            <label for="taskDescription">Task Description:</label>
+            <textarea class="input-field" id="taskDescription" name="taskDescription"></textarea>
+        </div>
+        <button type="submit" class="button">Update Task</button>
+    </form>
+
+    <div>
+        <button class="button" (click)="goToHome()">Back to Home</button>
+    </div>
+</div>
