@@ -3,11 +3,11 @@
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="taskName">Task Name:</label>
-      <input class="input-field" type="text" id="taskName" name="taskName" formControlName="taskName">
+      <input class="input-field" type="text" id="taskName" name="taskName" placeholder="Enter Task Title" formControlName="taskName">
     </div>
     <div class="form-group">
       <label for="taskDescription">Task Description:</label>
-      <textarea class="input-field" id="taskDescription" name="taskDescription"
+      <textarea class="input-field" id="taskDescription" name="taskDescription" placeholder="Enter Task Description"
         formControlName="taskDescription"></textarea>
     </div>
     <div class="form-group">
@@ -63,4 +63,32 @@
   </div>
 
 
+</ng-template>
+
+
+<ng-template #successModal let-modal>
+    <!-- Modal content here, e.g.: -->
+    <div class="modal-header">
+        <h4 class="modal-title">Delete Task</h4>
+    </div>
+    <div class="modal-body">
+        <p>{{ responseMessage }}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeAllModals()">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #failedModal let-modal>
+    <!-- Modal content here, e.g.: -->
+    <div class="modal-header">
+        <h4 class="modal-title">Delete Task</h4>
+    </div>
+    <div class="modal-body">
+        <p>{{ responseMessage }}</p>
+    </div>
+    <div class="modal-footer">
+
+        <button class="btn btn-secondary" (click)="closeAllModals()">Close</button>
+    </div>
 </ng-template>

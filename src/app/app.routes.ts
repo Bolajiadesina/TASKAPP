@@ -19,11 +19,11 @@ export const routes: Routes = [
         path: 'create', component: CreateTaskComponent
     },
     {
-        path: 'update/:id', component: UpdateTaskComponent,data: { renderMode: 'default'}
+        path: 'update', component: UpdateTaskComponent,data: { renderMode: 'default'}
     },
     {
         path: 'viewTasks', component: GetTaskComponent
     }, {
-        path: 'delete/:id', component: DeleteTaskComponent,data: { renderMode: 'default'}
+        path: 'delete', component: DeleteTaskComponent,data: { renderMode: 'default'}
     }
 ];

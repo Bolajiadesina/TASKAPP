@@ -1,11 +1,11 @@
 <div class="container">
     <h2>Delete Task</h2>
-    <form (ngSubmit)="getTaskByIdForDelete()">
+    <form >
         <div class="form-group">
-            <label for="taskId">Task ID:</label>
-            <input class="input-field" type="number" id="taskId" name="taskId" [(ngModel)]="taskId" required>
+            <label for="taskId">Enter Task ID</label>
+            <input class="input-field" type="number" id="taskId" name="taskId"  [(ngModel)]="taskId" required>
         </div>
-        <button type="submit" class="button">Delete Task</button>
+        <button type="submit" class="button" (click)="getTaskByIdForDelete()">Delete Task</button>
     </form>
     <div>
         <button class="button" (click)="goToHome()">Back to Home</button>
@@ -37,6 +37,9 @@
         <div>
             <label class="modal-label">Due Date:</label>
             <p>{{ task.taskDueDate }}</p>
+        </div>
+        <div>
+            <label class="modal-label">Are you sure you want to delete this task?</label>
         </div>
     </div>
     <div class="modal-footer">

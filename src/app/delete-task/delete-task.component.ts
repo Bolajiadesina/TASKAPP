@@ -52,7 +52,7 @@ export class DeleteTaskComponent {
         .subscribe(
           response => {
             this.task = response.data;
-            setTimeout(() => this.modalService.open(this.confirmDeleteModal)); // open modal after view init
+            //setTimeout(() => this.modalService.open(this.confirmDeleteModal)); // open modal after view init
           },
           error => {
             console.error('Error retrieving task:', error);
@@ -92,14 +92,16 @@ export class DeleteTaskComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://localhost:8080/api/tasks/${this.deleteItemid}`)
+    }>(`http://localhost:8080/api/tasks/${encodeURIComponent(this.deleteItemid)}`)
       .subscribe(
         response => {
-          if (response.responseCode != '00') {
+          if (response.responseCode == '00') {
             this.task = response.data;
+            this.closeAllModals();
             this.modalService.open(this.detailsModal);
           } else {
             this.responseMessage = response.responseMessage
+            this.closeAllModals();
             this.modalService.open(this.failedModal);
           }
         },
@@ -134,6 +136,7 @@ export class DeleteTaskComponent {
 
 
   deleteTask(id: number) {
+    this.closeAllModals();
     this.http.delete<{
       responseCode: string;
       responseMessage: string;
@@ -142,12 +145,11 @@ export class DeleteTaskComponent {
       .subscribe(
         response => {
           if (response.responseCode != '00') {
-            //this.modalService.dismissAll(this.confirmDeleteModal);
+           
             this.task = response.data;
             this.responseMessage = response.responseMessage
-            this.modalService.dismissAll(this.confirmDeleteModal);
+            
             this.modalService.open(this.successModal);
-            this.modalService.dismissAll();
           } else {
             this.responseMessage = response.responseMessage
             this.modalService.open(this.failedModal);
@@ -162,7 +164,6 @@ export class DeleteTaskComponent {
 
   closeAllModals() {
     this.modalService.dismissAll();
-
   }
   goToHome() {
     this.router.navigate(['/home']);

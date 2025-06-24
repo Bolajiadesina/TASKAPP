@@ -16,10 +16,20 @@ import { CommonModule } from '@angular/common';
 export class CreateTaskComponent {
   public taskForm!: FormGroup;
   modalData: any = {};
-
+  responseMessage: any = '';
+  responseCode: any = '';
+  task: any = {
+    taskId: 0,
+    taskName: '',
+    taskDescription: '',
+    taskStatus: '',
+    taskDueDate: ''
+  };
   today: string = new Date().toISOString().split('T')[0];
 
   @ViewChild('content') content!: TemplateRef<any>;
+  @ViewChild('failedModal') failedModal!: TemplateRef<any>;
+  @ViewChild('successModal') successModal!: TemplateRef<any>;
 
   constructor(
     private fb: FormBuilder,
@@ -38,12 +48,7 @@ export class CreateTaskComponent {
     });
   }
 
-  // onSubmit() {
-  //   if (this.taskForm.valid) {
-  //     this.modalData = this.taskForm.value;
-  //     this.modalService.open(this.content, { ariaLabelledBy: 'modal-basic-title' });
-  //   }
-  // }
+
 
   onSubmit() {
     if (this.taskForm.valid) {
@@ -56,13 +61,22 @@ export class CreateTaskComponent {
 
 
   onSubmitModal(formValue: any) {
-    console.log('Form Value:', formValue);
-    this.http.post('http://localhost:8080/api/tasks/create', formValue).subscribe(
+
+    this.http.post<{ responseCode: string; responseMessage: string; data: any; }>('http://localhost:8080/api/tasks/create', formValue).subscribe(
       response => {
-        console.log('Task created successfully:', response);
-        this.modalService.dismissAll();
-        alert('Task created successfully!');
-        this.router.navigate(['/home']); 
+
+        // this.modalService.dismissAll();
+        // this.modalService.open();
+        if (response.responseCode == '00') {
+          this.task = response.data;
+          this.responseMessage = response.responseMessage;
+          this.modalService.open(this.successModal);
+          setTimeout(() => window.location.reload(), 2000);
+        } else {
+          this.responseMessage = response.responseMessage;
+          this.modalService.open(this.failedModal);
+          setTimeout(() => window.location.reload(), 2000);
+        }
       },
       error => {
         console.error('Error creating task:', error);
@@ -71,7 +85,9 @@ export class CreateTaskComponent {
     );
   }
 
-
+  closeAllModals() {
+    this.modalService.dismissAll();
+  }
 
   goToHome() {
     this.router.navigate(['/home']);

@@ -47,10 +47,10 @@ export class HomeComponent {
     this.router.navigate(['/create']);
   }
   goToUpdateTask(): void {
-    this.router.navigate(['/update',0]);
+    this.router.navigate(['/update']);
   }
   goToDeleteTask(): void {
-    this.router.navigate(['/delete',0]);
+    this.router.navigate(['/delete']);
   }
 
 }

@@ -11,3 +11,11 @@
   border-bottom: 1px solid #dee2e6;
   border-radius: 2px;
 }
+.navbar{
+  background-color: #d0e2ff;
+}
+.nav-item{
+  background-color: #d0e2ff;
+  margin-left: 10px;
+  
+}
