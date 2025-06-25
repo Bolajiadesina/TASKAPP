@@ -62,11 +62,9 @@ export class CreateTaskComponent {
 
   onSubmitModal(formValue: any) {
 
-    this.http.post<{ responseCode: string; responseMessage: string; data: any; }>('http://localhost:8080/api/tasks/create', formValue).subscribe(
-      response => {
+    this.http.post<{ responseCode: string; responseMessage: string; data: any; }>
+    ('http://localhost:8080/api/tasks/create', formValue).subscribe(response => {
 
-        // this.modalService.dismissAll();
-        // this.modalService.open();
         if (response.responseCode == '00') {
           this.task = response.data;
           this.responseMessage = response.responseMessage;

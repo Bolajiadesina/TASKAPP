@@ -1,7 +1,7 @@
 .card-create-task {
     margin: 20px;
     padding: 20px;
-    /* width: 20%; */
+    height: 200px;
     align-items: center;
     justify-content: center;
 }
@@ -9,21 +9,21 @@
 .card-update-task {
     margin: 20px;
     padding: 20px;
-    /* width: 20%; */
+    height: 200px;
     align-items: center;
     justify-content: center;
 }
 .card-get-task {
     margin: 20px;
     padding: 20px;
-    /* width: 20%; */
+    height: 200px;
     align-items: center;
     justify-content: center;
 }
 .card-delete-task {
     margin: 20px;
     padding: 20px;
-    /* width: 20%; */
+    height: 200px;
     align-items: center;
     justify-content: center;
 }
@@ -31,7 +31,7 @@
 .card-get-All-task{
     margin: 20px;
     padding: 20px;
-    /* width: 20%; */
+    height: 200px;
     align-items: center;
     justify-content: center;
 }
@@ -48,4 +48,7 @@
     flex-direction: column;
     align-items: center;
 
+}
+.card-create-task{
+    
 }
