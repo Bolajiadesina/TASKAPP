@@ -48,10 +48,8 @@
   background-color: #c7f1b1;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
- 
   flex-direction: column;
   display: flex !important;
-  /* align-items: center; */
   justify-content: center;
   
 }

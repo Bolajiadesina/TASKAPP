@@ -13,20 +13,28 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Example row, replace with your data using *ngFor if in Angular -->
+
                 <tr *ngFor="let i of tasks">
-                    <td>{{ i.id }}</td>
+                    <td>{{ i.taskId }}</td>
                     <td>{{ i.taskName }}</td>
                     <td>{{ i.taskDescription }}</td>
-                    <td>{{ i.taskStatus }}</td>
+
+                    <td [ngClass]="{
+                        'status-pending': i.taskStatus === 'PENDING',
+                        'status-ongoing': i.taskStatus === 'ONGOING',
+                        'status-completed': i.taskStatus === 'COMPLETED'
+                        }">
+                        {{ i.taskStatus }}
+                    </td>
                     <td>{{ i.taskDueDate }}</td>
                     <td>
-                        <button class="btn btn-sm btn-secondary" (click)="getTaskById(i.id)">View</button>
-                        <button class="btn btn-sm btn-primary" (click)="goToUpdate(i.id)">Edit</button>
-                        <button class="btn btn-sm btn-danger" (click)="deleteSelectedItem(i.id)">Delete</button>
+                        <button class="btn btn-sm btn-secondary" (click)="getTaskById(i.taskId)">View</button>
+                        <button class="btn btn-sm btn-primary" (click)="updateTaskStatus(i.taskId)">Update
+                            Status</button>
+                        <button class="btn btn-sm btn-danger" (click)="deleteSelectedItem(i.taskId)">Delete</button>
                     </td>
                 </tr>
-                <!-- Repeat rows as needed -->
+
             </tbody>
         </table>
     </div>
@@ -46,7 +54,7 @@
     <div class="modal-body">
         <div>
             <label class="modal-label">Task Id:</label>
-            <p>{{ task.id }}</p>
+            <p>{{ task.taskId }}</p>
         </div>
         <div>
             <label class="modal-label">Task Name:</label>
@@ -74,7 +82,7 @@
 </ng-template>
 
 <ng-template #confirmDeleteModal let-modal>
-    <!-- Modal content here, e.g.: -->
+
     <div class="modal-header">
         <h4 class="modal-title">Delete Task</h4>
     </div>
@@ -97,14 +105,14 @@
     </div>
 
     <div class="modal-footer">
-        <!-- <button class="btn btn-danger" (click)="deleteTask(task.id)">Delete</button> -->
-        <button class="btn btn-danger" (click)="deleteItem(task.id)">Delete</button>
+
+        <button class="btn btn-danger" (click)="deleteItem(task.taskId)">Delete</button>
         <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
     </div>
 </ng-template>
 
 <ng-template #successModal let-modal>
-    <!-- Modal content here, e.g.: -->
+
     <div class="modal-header">
         <h4 class="modal-title">Delete Task</h4>
     </div>
@@ -117,7 +125,7 @@
 </ng-template>
 
 <ng-template #failedModal let-modal>
-    <!-- Modal content here, e.g.: -->
+
     <div class="modal-header">
         <h4 class="modal-title">Delete Task</h4>
     </div>
@@ -127,5 +135,47 @@
     <div class="modal-footer">
 
         <button class="btn btn-secondary" (click)="closeAllModals()">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #statusUpdateModal let-modal>
+
+    <div class="modal-header">
+        <h4 class="modal-title">Update Task Status</h4>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="statusForm">
+            <div>
+                <label class="modal-label">Task Status:</label>
+                <select class="input-field" id="taskStatus" name="taskStatus" formControlName="taskStatus">
+                    <option value="PENDING">Pending</option>
+                    <option value="ONGOING">Ongoing</option>
+                    <option value="COMPLETED">Completed</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="modal-label">Task Name:</label>
+                <p>{{ task.taskName }}</p>
+            </div>
+
+            <div>
+                <label class="modal-label">Task Description:</label>
+                <p>{{ task.taskDescription }}</p>
+            </div>
+
+            <div>
+                <label class="modal-label">Due Date:</label>
+                <p>{{ task.taskDueDate }}</p>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+
+        <button class="btn btn-danger"
+            (click)="changeTaskStatus(task.taskId,task.taskName,task.taskDescription,task.taskDueDate)">Update</button>
+        <button class="btn btn-secondary" (click)="closeAllModals()">Cancel</button>
     </div>
 </ng-template>

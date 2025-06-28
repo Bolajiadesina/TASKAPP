@@ -63,7 +63,7 @@ export class CreateTaskComponent {
   onSubmitModal(formValue: any) {
 
     this.http.post<{ responseCode: string; responseMessage: string; data: any; }>
-    ('http://localhost:8080/api/tasks/create', formValue).subscribe(response => {
+      ('http://localhost:8080/api/tasks/create', formValue).subscribe(response => {
 
         if (response.responseCode == '00') {
           this.task = response.data;
@@ -76,11 +76,11 @@ export class CreateTaskComponent {
           setTimeout(() => window.location.reload(), 2000);
         }
       },
-      error => {
-        console.error('Error creating task:', error);
-        this.modalService.dismissAll();
-      }
-    );
+        error => {
+          console.error('Error creating task:', error);
+          this.modalService.dismissAll();
+        }
+      );
   }
 
   closeAllModals() {

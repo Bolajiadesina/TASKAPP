@@ -19,15 +19,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DeleteTaskComponent {
 
-
-  constructor(private router: Router, private http: HttpClient, private modalService: NgbModal, private route: ActivatedRoute,) {
+  constructor(private router: Router, private http: HttpClient,
+    private modalService: NgbModal, private route: ActivatedRoute,) {
 
   }
 
-
-
-  deleteItemid: number = 0;
-  taskId: number = 0;
+  deleteItemid: string = '';
+  taskId: string = '';
   responseMessage: any = '';
   responseCode: any = '';
   tasks: any[] = [];
@@ -52,7 +50,6 @@ export class DeleteTaskComponent {
         .subscribe(
           response => {
             this.task = response.data;
-            //setTimeout(() => this.modalService.open(this.confirmDeleteModal)); // open modal after view init
           },
           error => {
             console.error('Error retrieving task:', error);
@@ -62,16 +59,14 @@ export class DeleteTaskComponent {
   }
 
 
-  getTaskById(id: number) {
+  getTaskById(taskId: string) {
     this.http.get<{
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://localhost:8080/api/tasks/${id}`)
+    }>(`http://localhost:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
-          // this.task = response.data;
-          // this.modalService.open(this.detailsModal); // Pass your modal template reference here
           if (response.responseCode != '00') {
             this.task = response.data;
             this.modalService.open(this.detailsModal);
@@ -87,12 +82,11 @@ export class DeleteTaskComponent {
   }
 
   getTaskByIdForDelete() {
-    this.deleteItemid = this.taskId;
     this.http.get<{
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://localhost:8080/api/tasks/${encodeURIComponent(this.deleteItemid)}`)
+    }>(`http://localhost:8080/api/tasks/${encodeURIComponent(this.taskId)}`)
       .subscribe(
         response => {
           if (response.responseCode == '00') {
@@ -135,26 +129,25 @@ export class DeleteTaskComponent {
   }
 
 
-  deleteTask(id: number) {
+  deleteTask(taskId: any) {
     this.closeAllModals();
     this.http.delete<{
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://localhost:8080/api/tasks/${id}`)
+    }>(`http://localhost:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
           if (response.responseCode != '00') {
-           
+
             this.task = response.data;
             this.responseMessage = response.responseMessage
-            
+
             this.modalService.open(this.successModal);
           } else {
             this.responseMessage = response.responseMessage
             this.modalService.open(this.failedModal);
           }
-
         },
         (error: any) => {
           console.error('Error retrieving task:', error);

@@ -5,13 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, catchError, throwError } from 'rxjs';
-
-
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-update-task',
   templateUrl: './update-task.component.html',
-  imports: [NgbModule, CommonModule,ReactiveFormsModule]
+  imports: [NgbModule, CommonModule, ReactiveFormsModule, HttpClientModule],
+  styleUrl: './update-task.component.css'
 })
 
 export class UpdateTaskComponent {
@@ -20,13 +20,13 @@ export class UpdateTaskComponent {
   responseMessage: any = '';
   responseCode: any = '';
   task: any = {
-    taskId: 0,
+    taskId: '',
     taskName: '',
     taskDescription: '',
     taskStatus: '',
     taskDueDate: ''
   };
-
+  today: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private fb: FormBuilder,
@@ -36,63 +36,61 @@ export class UpdateTaskComponent {
   ) {
     this.taskForm = this.fb.group({
       taskId: ['', Validators.required],
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      status: ['', Validators.required],
-      dueDate: ['', Validators.required]
+      taskName: ['', Validators.required],
+      taskDescription: ['', Validators.required],
+      taskStatus: ['', Validators.required],
+      taskDueDate: ['', Validators.required]
     });
   }
 
   @ViewChild('failedModal') failedModal!: TemplateRef<any>;
   @ViewChild('successModal') successModal!: TemplateRef<any>;
 
-
   goToHome() {
     this.router.navigate(['/home']);
   }
 
-
-  onSubmit() {
+  onSubmitUpdate() {
     if (this.taskForm.invalid) return;
-
     this.isUpdating = true;
-
-    const taskData = {
-      task_title: this.taskForm.value.title,
-      task_description: this.taskForm.value.description,
-      task_status: this.taskForm.value.status,
-      task_due_date: this.taskForm.value.dueDate
+    this.task = {
+      taskId: this.taskForm.value.taskId,
+      taskName: this.taskForm.value.taskName,
+      taskDescription: this.taskForm.value.taskDescription,
+      taskStatus: this.taskForm.value.taskStatus,
+      taskDueDate: this.taskForm.value.taskDueDate
     };
 
-    this.updateTask(this.taskForm.value.taskId, taskData).subscribe(response => {
+    this.updateTask(this.taskForm.value.taskId, this.task).subscribe(response => {
 
       if (response.responseCode == '00') {
         this.task = response.data;
         this.responseMessage = response.responseMessage;
         this.modalService.open(this.successModal);
-        setTimeout(() => window.location.reload(), 2000);
+       
       } else {
         this.responseMessage = response.responseMessage;
         this.modalService.open(this.failedModal);
-        setTimeout(() => window.location.reload(), 2000);
+        
       }
     },
       error => {
-        console.error('Error creating task:', error);
         this.modalService.dismissAll();
       }
     );
-
   }
 
-  updateTask(taskId: number, taskData: any): Observable<any> {
-    return this.http.put(`http://localhost:8080/api/tasks/${taskId}`, taskData)
+  updateTask(taskId: string, taskData: any): Observable<any> {
+    return this.http.put('http://localhost:8080/api/tasks', taskData)
       .pipe(
         catchError(error => {
-          console.error('Error updating task:', error);
           return throwError(() => new Error('Failed to update task'));
         })
       );
+  }
+
+  closeAllModals() {
+    this.modalService.dismissAll();
   }
 
 }

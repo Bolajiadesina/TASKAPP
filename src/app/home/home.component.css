@@ -1,7 +1,6 @@
 .card-create-task {
     margin: 20px;
     padding: 20px;
-    height: 200px;
     align-items: center;
     justify-content: center;
 }
@@ -39,9 +38,7 @@
 .btn.btn-primary {
     margin-top: 10px;
     padding-right: 40px;
-    text-align: center;
-    /* background-color: #abc6f1; */
-    
+    text-align: center;    
 }
 .col-md-6 {
     display: flex;

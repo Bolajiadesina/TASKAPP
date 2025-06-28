@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewChild, TemplateRef } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-get-task',
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, ReactiveFormsModule],
   templateUrl: './get-task.component.html',
   styleUrl: './get-task.component.css'
 })
 export class GetTaskComponent {
+
+
 
   tasks: any[] = [];
   task: any = {
@@ -24,22 +28,29 @@ export class GetTaskComponent {
     taskDueDate: ''
   };
   deleteItemid: number = 0;
-  taskId: number = 0;
+  taskId: any = 0;
   responseMessage: any = '';
   responseCode: any = '';
+  statusForm: any;
 
-  constructor(private router: Router, private http: HttpClient, private modalService: NgbModal,) {
+  constructor(private router: Router, private http: HttpClient, private modalService: NgbModal, private fb: FormBuilder) {
     const nav = this.router.getCurrentNavigation();
     this.tasks = nav?.extras.state?.['tasks'] || [];
+    this.statusForm = this.fb.group({
+      taskStatus: ['']
+    });
   }
-  @ViewChild('content') content!: TemplateRef<any>; // <-- Add this line
+  @ViewChild('content') content!: TemplateRef<any>;
   @ViewChild('detailsModal') detailsModal!: TemplateRef<any>;
   @ViewChild('confirmDeleteModal') confirmDeleteModal!: TemplateRef<any>;
   @ViewChild('failedModal') failedModal!: TemplateRef<any>;
   @ViewChild('successModal') successModal!: TemplateRef<any>;
+  @ViewChild('statusUpdateModal') statusUpdateModal!: TemplateRef<any>;
+
+
   ngOnInit() {
     if (!this.tasks.length) {
-      // Fetch from API if tasks not present (e.g., after refresh)
+
       this.http.get<{ data: any[] }>('http://localhost:8080/api/tasks/getAll')
         .subscribe(response => {
           this.tasks = response.data;
@@ -51,7 +62,7 @@ export class GetTaskComponent {
   }
 
 
-  deleteTask(id: number) {
+  deleteTask(id: any) {
     this.http.delete<{
       responseCode: string;
       responseMessage: string;
@@ -60,7 +71,6 @@ export class GetTaskComponent {
       .subscribe(
         response => {
           if (response.responseCode != '00') {
-            //this.modalService.dismissAll(this.confirmDeleteModal);
             this.task = response.data;
             this.responseMessage = response.responseMessage
             this.modalService.open(this.confirmDeleteModal);
@@ -79,7 +89,7 @@ export class GetTaskComponent {
       );
   }
 
-  deleteSelectedItem(id: number) {
+  deleteSelectedItem(id: any) {
     this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${id}`)
       .subscribe(
         response => {
@@ -90,20 +100,19 @@ export class GetTaskComponent {
           console.error('Error retrieving task:', error);
         }
       );
-    
+
   }
 
   goToUpdate(id: number) {
     this.router.navigate(['/update/{taskId}']);
-    
   }
 
-  getTaskById(id: number) {
+  getTaskById(id: any) {
     this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${id}`)
       .subscribe(
         response => {
           this.task = response.data;
-          this.modalService.open(this.content); // Pass your modal template reference here
+          this.modalService.open(this.content);
         },
         (error: any) => {
           console.error('Error retrieving task:', error);
@@ -112,16 +121,16 @@ export class GetTaskComponent {
   }
 
 
-  deleteItem(id: number) {
+  deleteItem(taskId: any) {
     this.closeAllModals();
-   
-    this.http.delete<{ responseCode: string; responseMessage: string; data: any; }>(`http://localhost:8080/api/tasks/${id}`)
+
+    this.http.delete<{ responseCode: string; responseMessage: string; data: any; }>(`http://localhost:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
           if (response.responseCode == '00') {
             this.task = response.data;
             this.responseMessage = response.responseMessage;
-            this.modalService.open(this.successModal); 
+            this.modalService.open(this.successModal);
             setTimeout(() => window.location.reload(), 2000);
           } else {
             this.responseMessage = response.responseMessage;
@@ -141,8 +150,53 @@ export class GetTaskComponent {
   }
 
 
-  closeAllModals(){
+  closeAllModals() {
     this.modalService.dismissAll();
+  }
+
+  updateTaskStatus(taskId: String) {
+    this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${taskId}`)
+      .subscribe(
+        response => {
+          this.task = response.data;
+          this.modalService.open(this.statusUpdateModal);
+        },
+        (error: any) => {
+          console.error('Error retrieving task:', error);
+        }
+      );
+  }
+
+  changeTaskStatus(taskId: string, taskName: string, taskDescription: string, taskDueDate: string) {
+    this.task.taskStatus = this.statusForm.get('taskStatus').value;
+    this.task.taskId = taskId;
+    this.task.taskName = taskName;
+    this.task.taskDescription = taskDescription;
+    this.task.taskDueDate = taskDueDate;
+    console.log(this.task.taskStatus);
+
+
+    this.http.put<{ responseCode: string; responseMessage: string; data: any; }>(
+      'http://localhost:8080/api/tasks',
+      this.task
+    ).subscribe(
+      response => {
+        if (response.responseCode == '00') {
+          this.task = response.data;
+          this.responseMessage = response.responseMessage;
+          this.modalService.open(this.successModal);
+          setTimeout(() => window.location.reload(), 2000);
+        } else {
+          this.responseMessage = response.responseMessage;
+          this.modalService.open(this.failedModal);
+
+        }
+      },
+      error => {
+        console.error('Error updating task:', error);
+        this.modalService.dismissAll();
+      }
+    );
   }
 
 }

@@ -19,7 +19,7 @@ export const routes: Routes = [
         path: 'create', component: CreateTaskComponent
     },
     {
-        path: 'update', component: UpdateTaskComponent,data: { renderMode: 'default'}
+        path: 'update', component: UpdateTaskComponent
     },
     {
         path: 'viewTasks', component: GetTaskComponent
