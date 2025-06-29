@@ -4,21 +4,22 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewChild, TemplateRef } from '@angular/core';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl,FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-get-task',
-  imports: [CommonModule, HttpClientModule, ReactiveFormsModule],
+  imports: [CommonModule, HttpClientModule, ReactiveFormsModule, NgxPaginationModule,FormsModule],
   templateUrl: './get-task.component.html',
   styleUrl: './get-task.component.css'
 })
 export class GetTaskComponent {
 
 
-
+  page = 1;
+  filterText: string = '';
   tasks: any[] = [];
   task: any = {
     taskId: 0,
@@ -33,7 +34,7 @@ export class GetTaskComponent {
   responseCode: any = '';
   statusForm: any;
 
-  constructor(private router: Router, private http: HttpClient, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(private router: Router, public http: HttpClient, private modalService: NgbModal, private fb: FormBuilder) {
     const nav = this.router.getCurrentNavigation();
     this.tasks = nav?.extras.state?.['tasks'] || [];
     this.statusForm = this.fb.group({
@@ -196,6 +197,18 @@ export class GetTaskComponent {
         console.error('Error updating task:', error);
         this.modalService.dismissAll();
       }
+    );
+  }
+
+
+
+  get filteredTasks() {
+    if (!this.filterText) return this.tasks;
+    const lower = this.filterText.toLowerCase();
+    return this.tasks.filter(task =>
+      (task.taskName && task.taskName.toLowerCase().includes(lower)) ||
+      (task.taskDescription && task.taskDescription.toLowerCase().includes(lower)) ||
+      (task.taskStatus && task.taskStatus.toLowerCase().includes(lower))
     );
   }
 

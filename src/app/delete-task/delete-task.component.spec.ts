@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DeleteTaskComponent } from './delete-task.component';
+import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 describe('DeleteTaskComponent', () => {
   let component: DeleteTaskComponent;
@@ -8,16 +9,33 @@ describe('DeleteTaskComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeleteTaskComponent]
+      imports: [DeleteTaskComponent, ReactiveFormsModule],
+      providers: [
+        { provide: ActivatedRoute, 
+          useValue: { 
+            snapshot: { 
+              paramMap: {
+                get:  (key:string)=> null
+              } 
+            } 
+          } 
+        }
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(DeleteTaskComponent);
     component = fixture.componentInstance;
+    component.taskForm = new FormGroup({
+    taskId: new FormControl('')
+    });
+
+
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should delete', () => {
     expect(component).toBeTruthy();
   });
+
 });

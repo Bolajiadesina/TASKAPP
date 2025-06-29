@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -19,9 +19,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class DeleteTaskComponent {
 
+  taskForm: FormGroup;
   constructor(private router: Router, private http: HttpClient,
-    private modalService: NgbModal, private route: ActivatedRoute,) {
-
+    private modalService: NgbModal, private route: ActivatedRoute, private fb: FormBuilder) {
+    this.taskForm = this.fb.group({
+      taskId: ['']
+    });
   }
 
   deleteItemid: string = '';
@@ -44,6 +47,7 @@ export class DeleteTaskComponent {
   @ViewChild('successModal') successModal!: TemplateRef<any>;
 
   ngOnInit() {
+    console.log('route:', this.route);
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${id}`)

@@ -1,6 +1,8 @@
 <div>
-    <h2>View Tasks</h2>
+    <h2>Tasks</h2>
     <div class="task-list">
+        <input type="text" class="form-control mb-2" placeholder="Filter by name, description, or status"
+            [(ngModel)]="filterText" />
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -14,7 +16,7 @@
             </thead>
             <tbody>
 
-                <tr *ngFor="let i of tasks">
+                <tr *ngFor="let i of filteredTasks | paginate: { itemsPerPage: 10, currentPage: page }">
                     <td>{{ i.taskId }}</td>
                     <td>{{ i.taskName }}</td>
                     <td>{{ i.taskDescription }}</td>
@@ -37,6 +39,7 @@
 
             </tbody>
         </table>
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
     <div class="container">
 
