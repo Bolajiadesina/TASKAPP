@@ -1,59 +1,74 @@
 # TaskApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
+TaskApp
+TaskApp is a simple Angular application for managing tasks. It allows users to create, view, update, and delete tasks, with features such as form validation, modal dialogs, filtering, and pagination. The project demonstrates best practices in Angular development, including the use of standalone components, reactive and template-driven forms, and unit testing.
 
-## Development server
+Features
+Create Task: Add new tasks with validation for required fields and due date.
+View Tasks: Display a paginated and filterable list of all tasks.
+Update Task: Edit task details and status using modals and forms.
+Delete Task: Remove tasks with confirmation dialogs.
+Form Validation: Both template-driven and reactive forms, including UUID validation for task IDs.
+Modals: User-friendly confirmation and feedback using ng-bootstrap modals.
+Pagination: Easy navigation through large task lists using ngx-pagination.
+Filtering: Real-time filtering of tasks by name, description, or status.
+Unit Testing: Comprehensive test coverage for components and services.
+## Getting Started
+### Prerequisites
+Node.js (v16+ recommended)
+Angular CLI (npm install -g @angular/cli)
 
-To start a local development server, run:
+Installation
+Clone the repository:
+```git clone``` https://github.com/yourusername/TaskApp.git
+```cd TaskApp```
 
-```bash
-ng serve
-```
+Install dependencies:
+```npm install```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Install required libraries:
+```npm install ngx-pagination @ng-bootstrap/ng-bootstrap```
 
-## Code scaffolding
+Running the Application
+```ng serve```
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Open your browser at http://localhost:4200.
 
-```bash
-ng generate component component-name
-```
+Running Unit Tests
+```ng test```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+This will run all ```.spec.ts``` files using Karma and Jasmine.
 
-```bash
-ng generate --help
-```
+### Project Structure
+src/app/
+  ├── create-task/         # CreateTaskComponent (standalone)
+  ├── get-task/            # GetTaskComponent (standalone, task list, filter, pagination)
+  ├── update-task/         # UpdateTaskComponent (standalone, update form)
+  ├── delete-task/         # DeleteTaskComponent (standalone, delete confirmation)
+  ├── app.component.*      # Main app shell
+  └── ...                  # Other shared modules and assets
 
-## Building
+### API
+The app expects a backend API with endpoints like:
 
-To build the project run:
+- GET ```/api/tasks``` - List all tasks
+- GET ```/api/tasks/:id``` - Get a task by ID
+- POST ```/api/tasks/create``` - Create a new task
+- PUT ```/api/tasks``` - Update a task (with task object in body)
+- DELETE ```/api/tasks/:id``` - Delete a task by ID
+You can configure the API base URL in the service or environment files.
 
-```bash
-ng build
-```
+### Customization
+- Styling: Modify CSS in each component or in app.component.css.
+- Validation: Adjust or add validators in the form definitions.
+- Modals: Customize modal templates in each component’s HTML.
+Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Acknowledgements
+Angular
+ng-bootstrap
+ngx-pagination
+Enjoy using TaskApp! If you have any questions or suggestions, feel free to open an issue or contact the maintainer.
