@@ -52,7 +52,7 @@ export class GetTaskComponent {
   ngOnInit() {
     if (!this.tasks.length) {
 
-      this.http.get<{ data: any[] }>('http://localhost:8080/api/tasks/getAll')
+      this.http.get<{ data: any[] }>('http://3.10.228.46:8080/api/tasks/getAll')
         .subscribe(response => {
           this.tasks = response.data;
         }),
@@ -68,7 +68,7 @@ export class GetTaskComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://localhost:8080/api/tasks/${id}`)
+    }>(`http://3.10.228.46:8080/api/tasks/${id}`)
       .subscribe(
         response => {
           if (response.responseCode != '00') {
@@ -91,7 +91,7 @@ export class GetTaskComponent {
   }
 
   deleteSelectedItem(id: any) {
-    this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${id}`)
+    this.http.get<{ data: any }>(`http://3.10.228.46:8080/api/tasks/${id}`)
       .subscribe(
         response => {
           this.task = response.data;
@@ -109,7 +109,7 @@ export class GetTaskComponent {
   }
 
   getTaskById(id: any) {
-    this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${id}`)
+    this.http.get<{ data: any }>(`http://3.10.228.46:8080/api/tasks/${id}`)
       .subscribe(
         response => {
           this.task = response.data;
@@ -125,7 +125,7 @@ export class GetTaskComponent {
   deleteItem(taskId: any) {
     this.closeAllModals();
 
-    this.http.delete<{ responseCode: string; responseMessage: string; data: any; }>(`http://localhost:8080/api/tasks/${taskId}`)
+    this.http.delete<{ responseCode: string; responseMessage: string; data: any; }>(`http://3.10.228.46:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
           if (response.responseCode == '00') {
@@ -156,7 +156,7 @@ export class GetTaskComponent {
   }
 
   updateTaskStatus(taskId: String) {
-    this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${taskId}`)
+    this.http.get<{ data: any }>(`http://3.10.228.46:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
           this.task = response.data;
@@ -178,7 +178,7 @@ export class GetTaskComponent {
 
 
     this.http.put<{ responseCode: string; responseMessage: string; data: any; }>(
-      'http://localhost:8080/api/tasks',
+      'http://3.10.228.46:8080/api/tasks',
       this.task
     ).subscribe(
       response => {

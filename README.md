@@ -18,6 +18,9 @@ Unit Testing: Comprehensive test coverage for components and services.
 Node.js (v16+ recommended)
 Angular CLI (npm install -g @angular/cli)
 
+Live Deployment on AWS:
+http://3.10.228.46/home
+
 Installation
 Clone the repository:
 ```git clone``` https://github.com/yourusername/TaskApp.git

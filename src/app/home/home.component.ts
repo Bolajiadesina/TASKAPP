@@ -30,7 +30,7 @@ export class HomeComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>('http://localhost:8080/api/tasks/getAll').subscribe(
+    }>('http://3.10.228.46:8080/api/tasks/getAll').subscribe(
       response => {
         this.router.navigate(['/viewTasks'], { state: { tasks: response.data } });
       },
