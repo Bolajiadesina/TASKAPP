@@ -6,12 +6,12 @@ import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ViewChild, TemplateRef } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, FormControl,FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-get-task',
-  imports: [CommonModule, HttpClientModule, ReactiveFormsModule, NgxPaginationModule,FormsModule],
+  imports: [CommonModule, HttpClientModule, ReactiveFormsModule, NgxPaginationModule, FormsModule],
   templateUrl: './get-task.component.html',
   styleUrl: './get-task.component.css'
 })
@@ -200,6 +200,31 @@ export class GetTaskComponent {
     );
   }
 
+  getTimeliness(task: any): 'On Time' | 'Overdue' | 'Due' {
+  if (!task.taskDueDate) return 'Due';
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const due = new Date(task.taskDueDate);
+  due.setHours(0, 0, 0, 0);
+
+  // 1. Completed tasks are always "On Time"
+  if (task.taskStatus === 'COMPLETED') {
+    return 'On Time';
+  }
+
+  // 2. If due date is before today, and not completed
+  if (due.getTime() < today.getTime()) {
+    return 'Overdue';
+  }
+
+  // 3. Due today or in future, and not completed
+  return 'Due';
+}
+
+
+
 
 
   get filteredTasks() {
@@ -208,7 +233,8 @@ export class GetTaskComponent {
     return this.tasks.filter(task =>
       (task.taskName && task.taskName.toLowerCase().includes(lower)) ||
       (task.taskDescription && task.taskDescription.toLowerCase().includes(lower)) ||
-      (task.taskStatus && task.taskStatus.toLowerCase().includes(lower))
+      (task.taskStatus && task.taskStatus.toLowerCase().includes(lower)) ||
+      (task.taskId && task.taskId.toLowerCase().includes(lower))
     );
   }
 

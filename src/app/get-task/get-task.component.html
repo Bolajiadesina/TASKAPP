@@ -10,6 +10,7 @@
                     <th>Task Name</th>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Timeliness</th>
                     <th>Due Date</th>
                     <th>Actions</th>
                 </tr>
@@ -27,6 +28,11 @@
                         'status-completed': i.taskStatus === 'COMPLETED'
                         }">
                         {{ i.taskStatus }}
+                    </td>
+                    <td>
+                        <span [ngClass]="getTimeliness(i) === 'Overdue' ? 'text-danger' : 'text-success'">
+                            {{ getTimeliness(i) }}
+                        </span>
                     </td>
                     <td>{{ i.taskDueDate }}</td>
                     <td>
