@@ -174,7 +174,7 @@ export class GetTaskComponent {
     this.task.taskName = taskName;
     this.task.taskDescription = taskDescription;
     this.task.taskDueDate = taskDueDate;
-    console.log(this.task.taskStatus);
+    
 
 
     this.http.put<{ responseCode: string; responseMessage: string; data: any; }>(
@@ -200,29 +200,64 @@ export class GetTaskComponent {
     );
   }
 
+  // getTimeliness(task: any): 'On Time' | 'Overdue' | 'Due' {
+  //   if (!task.taskDueDate) return 'Due';
+
+  //   const today = new Date();
+  //   today.setHours(0, 0, 0, 0);
+
+  //   const due = new Date(task.taskDueDate);
+  //   due.setHours(0, 0, 0, 0);
+
+  //   // 1. Completed tasks are always "On Time"
+  //   if (task.taskStatus === 'COMPLETED') {
+  //     return 'On Time';
+  //   }
+
+  //   // 2. If due date is before today, and not completed
+  //   if (due.getTime() === today.getTime() && (task.taskStatus === 'PENDING' || task.taskStatus === 'ONGOING')) {
+  //     return 'Due';
+  //   } else if (due.getTime() < today.getTime()) {
+  //     return 'Overdue';
+  //   } else if (due.getTime() < today.getTime() && task.taskStatus !== 'COMPLETED') {
+  //     return 'Overdue';
+  //   } else if (due.getTime() === today.getTime() && task.taskStatus === 'COMPLETED') {
+  //     return 'On Time';
+  //   }
+
+  //   // 3. Due today or in future, and not completed
+  //   return 'Due';
+  // }
+
+
   getTimeliness(task: any): 'On Time' | 'Overdue' | 'Due' {
-  if (!task.taskDueDate) return 'Due';
+    if (!task.taskDueDate) return 'Due';
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  const due = new Date(task.taskDueDate);
-  due.setHours(0, 0, 0, 0);
+    const due = new Date(task.taskDueDate);
+    due.setHours(0, 0, 0, 0);
 
-  // 1. Completed tasks are always "On Time"
-  if (task.taskStatus === 'COMPLETED') {
-    return 'On Time';
+    // If completed, always "On Time"
+    if (task.taskStatus === 'COMPLETED') {
+      return 'On Time';
+    }
+
+    // If due date is before today and not completed, it's "Overdue"
+    if (due <today) {
+      return 'Overdue';
+    }
+
+    if(task.taskStatus === 'PENDING' || task.taskStatus === 'ONGOING') {
+      // If due date is today and not completed, it's "Due"
+      if (due.getTime() === today.getTime()) {
+        return 'Due';
+      }
+    }
+    // If due date is today or in the future and not completed, it's "Due"
+    return 'Due';
   }
-
-  // 2. If due date is before today, and not completed
-  if (due.getTime() < today.getTime()) {
-    return 'Overdue';
-  }
-
-  // 3. Due today or in future, and not completed
-  return 'Due';
-}
-
 
 
 
