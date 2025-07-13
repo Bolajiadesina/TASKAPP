@@ -1,0 +1,19 @@
+<div class="login-container">
+
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="task-form">
+    <h2>Login</h2>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input class="input-field" type="text" id="email" formControlName="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input class="input-field" type="password" id="password" formControlName="password" required>
+
+    </div>
+      <div class="button-container">
+       <button type="submit">Login</button>
+    </div>
+   
+  </form>
+</div>

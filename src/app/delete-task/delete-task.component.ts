@@ -50,7 +50,7 @@ export class DeleteTaskComponent {
     console.log('route:', this.route);
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.http.get<{ data: any }>(`http://3.10.228.46:8080/api/tasks/${id}`)
+      this.http.get<{ data: any }>(`http://localhost:8080/api/tasks/${id}`)
         .subscribe(
           response => {
             this.task = response.data;
@@ -68,7 +68,7 @@ export class DeleteTaskComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://3.10.228.46:8080/api/tasks/${taskId}`)
+    }>(`http://localhost:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
           if (response.responseCode != '00') {
@@ -90,7 +90,7 @@ export class DeleteTaskComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://3.10.228.46:8080/api/tasks/${encodeURIComponent(this.taskId)}`)
+    }>(`http://localhost:8080/api/tasks/${encodeURIComponent(this.taskId)}`)
       .subscribe(
         response => {
           if (response.responseCode == '00') {
@@ -119,7 +119,7 @@ export class DeleteTaskComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://3.10.228.46:8080/api/tasks/${this.taskId}`)
+    }>(`http://localhost:8080/api/tasks/${this.taskId}`)
       .subscribe(
         response => {
           this.task = response.data;
@@ -139,7 +139,7 @@ export class DeleteTaskComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>(`http://3.10.228.46:8080/api/tasks/${taskId}`)
+    }>(`http://localhost:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
           if (response.responseCode != '00') {

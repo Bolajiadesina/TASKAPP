@@ -81,7 +81,7 @@ export class UpdateTaskComponent {
   }
 
   updateTask(taskId: string, taskData: any): Observable<any> {
-    return this.http.put('http://3.10.228.46:8080/api/tasks', taskData)
+    return this.http.put(`http://localhost:8080/api/tasks/${taskId}`, taskData)
       .pipe(
         catchError(error => {
           return throwError(() => new Error('Failed to update task'));

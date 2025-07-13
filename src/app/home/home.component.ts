@@ -6,6 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../services/auth';
 
 
 @Component({
@@ -16,9 +17,15 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class HomeComponent {
 
-  constructor(private router: Router, private http: HttpClient) {
+  
+  logout(): void {
+    this.authService.logout();
+  }
+
+  constructor(private router: Router, private http: HttpClient,private authService: AuthService) {
     this.router = router;
     this.http = http;
+    this.authService = authService;
   }
   longTextCreate = 'Create Tasks: Here you can create tasks, which will be stored in the database.';
   longTextUpdate = 'Update Tasks: Here you can update tasks that have been created. The tasks are displayed in a list format';
@@ -30,7 +37,7 @@ export class HomeComponent {
       responseCode: string;
       responseMessage: string;
       data: any;
-    }>('http://3.10.228.46:8080/api/tasks/getAll').subscribe(
+    }>('http://localhost:8080/api/tasks/getAll').subscribe(
       response => {
         this.router.navigate(['/viewTasks'], { state: { tasks: response.data } });
       },
