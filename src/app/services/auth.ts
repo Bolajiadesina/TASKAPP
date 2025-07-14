@@ -4,13 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-const GOOGLE_CLIENT_ID = '853554581384-gofpjiqdc65esepn51oumk0v6m86au9u.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '853554581384-b3r6cigqjmn5562oi1p832shptom3ghm.apps.googleusercontent.com';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl: string | null = 'http://localhost:8080/api/tasks'; 
+  private apiUrl: string | null = 'http://localhost:8080/api/tasks';
   private token: string | null = null;
   private isBrowser: boolean;
 
@@ -26,17 +26,22 @@ export class AuthService {
     }
   }
 
-  loginWithGoogle(value: any): void {
+  loginWithGoogle(loginForm: any): void {
     if (!this.isBrowser) return;
-    const redirectUri = encodeURIComponent(window.location.origin + 'http://localhost:4200/home');
+
+    const redirectUri = encodeURIComponent('http://localhost:4200/home');
+    const scope = encodeURIComponent(
+      'openid profile email https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/calendar.readonly'
+    );
+
     const url =
       `https://accounts.google.com/o/oauth2/v2/auth?` +
-      `scope=https%3A//www.googleapis.com/auth/drive.metadata.readonly%20https%3A//www.googleapis.com/auth/calendar.readonly&` +
-      `include_granted_scopes=true&` +
-      `response_type=code&` +
       `client_id=${GOOGLE_CLIENT_ID}` +
       `&redirect_uri=${redirectUri}` +
-      `&scope=openid%20profile%20email`;
+      `&response_type=code` +
+      `&scope=${scope}` +
+      `&include_granted_scopes=true`;
+
     window.location.href = url;
   }
 
