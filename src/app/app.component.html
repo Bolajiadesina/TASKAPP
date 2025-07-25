@@ -1,16 +1,14 @@
 <div class="header">
 
   <a class="navbar-brand" href="/home">
-    <img src="assets/images/mojlogo.png" alt="Logo" style="width:40px;">
+    <img src="../assets/images/mojlogo.png" alt="Logo" style="width:40px;">
     <h1>Ministry of Justice</h1>
   </a>
-  
-
-
   <h2 class="sub-header">Task Management System</h2>
-
+  <h3 class="sub-header">{{todayDate}}</h3>
+  
+  
 </div>
-
-
-
-<router-outlet></router-outlet>
+<div *ngIf="isAppReady">
+  <router-outlet></router-outlet>
+</div>

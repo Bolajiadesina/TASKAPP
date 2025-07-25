@@ -127,3 +127,18 @@ table.table-striped {
 /* Add to your component or global CSS */
 .text-danger { color: #dc3545; font-weight: bold; }
 .text-success { color: #28a745; font-weight: bold; }
+
+.logout-container {
+  display: flex;
+  justify-content: flex-end; /* pushes content to the right */
+  padding: 10px 20px;
+}
+
+.logout-button {
+  background-color: #1461c0;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}

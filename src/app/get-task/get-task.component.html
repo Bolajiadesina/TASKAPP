@@ -1,5 +1,8 @@
 <div>
-    <h2>Tasks</h2>
+    <div class="logout-container">
+        <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+    <h2>Tasks</h2> 
     <div class="task-list">
         <input type="text" class="form-control mb-2" placeholder="Filter by name, description, or status"
             [(ngModel)]="filterText" />
@@ -123,7 +126,7 @@
 <ng-template #successModal let-modal>
 
     <div class="modal-header">
-        <h4 class="modal-title">Delete Task</h4>
+        <h4 class="modal-title">Get Task</h4>
     </div>
     <div class="modal-body">
         <p>{{ responseMessage }}</p>
@@ -136,7 +139,7 @@
 <ng-template #failedModal let-modal>
 
     <div class="modal-header">
-        <h4 class="modal-title">Delete Task</h4>
+        <h4 class="modal-title">Get Task</h4>
     </div>
     <div class="modal-body">
         <p>{{ responseMessage }}</p>
@@ -155,6 +158,10 @@
 
     <div class="modal-body">
         <form [formGroup]="statusForm">
+            <div>
+                <label class="modal-label">Current Status:</label>
+                <p>{{ task.taskStatus }}</p>
+            </div>
             <div>
                 <label class="modal-label">Task Status:</label>
                 <select class="input-field" id="taskStatus" name="taskStatus" formControlName="taskStatus">

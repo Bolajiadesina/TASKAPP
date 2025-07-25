@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth';
 
 @Component({
   selector: 'app-create-task',
@@ -36,7 +37,8 @@ export class CreateTaskComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
     this.activatedRoute.queryParams.subscribe(param => {
       this.taskForm = this.fb.group({
@@ -44,12 +46,13 @@ export class CreateTaskComponent {
         taskDescription: [param['taskDescription'] || '', Validators.required],
         taskStatus: [param['taskStatus'] || '', Validators.required],
         taskDueDate: [param['taskDueDate'] || '', Validators.required]
+
       });
     });
   }
 
 
-//http://3.10.228.46:8080
+
   onSubmit() {
     if (this.taskForm.valid) {
       this.modalData = this.taskForm.value;
@@ -61,6 +64,10 @@ export class CreateTaskComponent {
 
 
   onSubmitModal(formValue: any) {
+    // Format the date from yyyy-MM-dd to dd-MM-yyyy
+    if (formValue.taskDueDate) {
+      formValue.taskDueDate = this.reverseDate(formValue.taskDueDate);
+    }
 
     this.http.post<{ responseCode: string; responseMessage: string; data: any; }>
       ('http://localhost:8080/api/tasks/create', formValue).subscribe(response => {
@@ -89,5 +96,17 @@ export class CreateTaskComponent {
 
   goToHome() {
     this.router.navigate(['/home']);
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
+  reverseDate(inputDate: string | null): string {
+    if (inputDate === null) return "";
+
+    const parts = inputDate.split("-");
+    if (parts.length !== 3) return inputDate; // return as is if not in expected format
+
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
 }

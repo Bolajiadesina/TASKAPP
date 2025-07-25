@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../services/auth';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class DeleteTaskComponent {
 
   taskForm: FormGroup;
   constructor(private router: Router, private http: HttpClient,
-    private modalService: NgbModal, private route: ActivatedRoute, private fb: FormBuilder) {
+    private modalService: NgbModal, private route: ActivatedRoute, private fb: FormBuilder,
+    private authService: AuthService) {
     this.taskForm = this.fb.group({
       taskId: ['']
     });
@@ -39,7 +41,7 @@ export class DeleteTaskComponent {
     taskStatus: '',
     taskDueDate: ''
   };
-//http://3.10.228.46:8080
+
 
   @ViewChild('detailsModal') detailsModal!: TemplateRef<any>;
   @ViewChild('confirmDeleteModal') confirmDeleteModal!: TemplateRef<any>;
@@ -164,6 +166,10 @@ export class DeleteTaskComponent {
   }
   goToHome() {
     this.router.navigate(['/home']);
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
 }

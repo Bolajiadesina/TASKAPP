@@ -26,13 +26,34 @@
     font-size: 16px;
 }
 .button {
-    width: 100%;
-    padding: 10px;
-    background-color: #5a8fc7;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  background-color: #5a8fc7;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.logout-button {
+  align-items: right;
     margin-top: 10px;
+    padding-right: 40px;
+    text-align: center; 
+}
+
+.logout-container {
+  display: flex;
+  justify-content: flex-end; /* pushes content to the right */
+  padding: 10px 20px;
+}
+
+.logout-button {
+  background-color: #1461c0;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }

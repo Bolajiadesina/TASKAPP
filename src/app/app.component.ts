@@ -1,15 +1,34 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from './services/auth';
+import { CommonModule } from '@angular/common';  
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterModule,CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent {
-logout() {
-throw new Error('Method not implemented.');
-}
+  email: any;
+  name: any;
+  login: any;
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.router = router;
+  }
   title = 'TaskApp';
+  isAppReady = false;
+  
+
+   todayDate = new Date();
+
+
+  ngOnInit() {
+    this.authService.initializeAuth().then(() => {
+      this.isAppReady = true;
+    });
+  }
+
 }

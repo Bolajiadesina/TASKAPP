@@ -1,18 +1,19 @@
 <div class="login-container">
 
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="task-form">
+  <form [formGroup]="loginForm" (ngSubmit)="loginWithGoogle()" class="task-form">
     <h2>Login</h2>
     <div class="form-group">
       <label for="email">Email:</label>
-      <input class="input-field" type="text" id="email" formControlName="email" required>
+      <input class="input-field" type="text" id="email" formControlName="email" placeholder="Enter your Gmail address" required>
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
-      <input class="input-field" type="password" id="password" formControlName="password" required>
+      <input class="input-field" type="password" id="password" formControlName="password" placeholder="Enter your Gmail password">
 
     </div>
       <div class="button-container">
        <button type="submit">Login</button>
+       <button type="submit">Login with Google</button>
     </div>
    
   </form>

@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .card-get-task {
     margin: 20px;
     padding: 20px;
@@ -19,6 +20,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .card-delete-task {
     margin: 20px;
     padding: 20px;
@@ -27,7 +29,7 @@
     justify-content: center;
 }
 
-.card-get-All-task{
+.card-get-All-task {
     margin: 20px;
     padding: 20px;
     height: 200px;
@@ -38,14 +40,51 @@
 .btn.btn-primary {
     margin-top: 10px;
     padding-right: 40px;
-    text-align: center;    
+    text-align: center;
 }
+
 .col-md-6 {
     display: flex;
     flex-direction: column;
     align-items: center;
 
 }
-.card-create-task{
-    
+
+
+.logout-container {
+    display: flex;
+    justify-content: flex-end;
+    /* pushes content to the right */
+    padding: 10px 20px;
+}
+
+.user-detail-name {
+    display: flex;
+    justify-content: flex-end;
+    /* pushes content to the right */
+    /* padding: 10px 20px; */
+    background-color: #e1e3e6;
+    color: rgb(3, 0, 0);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout-button {
+    background-color: #1461c0;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.user-detail {
+    background-color: #e1e3e6;
+    color: rgb(3, 0, 0);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
 }

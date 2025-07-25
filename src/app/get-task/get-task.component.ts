@@ -7,6 +7,7 @@ import { ViewChild, TemplateRef } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, FormControl, FormsModule } from '@angular/forms';
+import { AuthService } from '../services/auth';
 
 
 @Component({
@@ -34,8 +35,12 @@ export class GetTaskComponent {
   responseCode: any = '';
   statusForm: any;
 
-  constructor(private router: Router, public http: HttpClient, private modalService: NgbModal, private fb: FormBuilder) {
+  constructor(private router: Router, public http: HttpClient,
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private authService: AuthService) {
     const nav = this.router.getCurrentNavigation();
+    this.authService = authService;
     this.tasks = nav?.extras.state?.['tasks'] || [];
     this.statusForm = this.fb.group({
       taskStatus: ['']
@@ -125,7 +130,7 @@ export class GetTaskComponent {
   deleteItem(taskId: any) {
     this.closeAllModals();
 
-    this.http.delete<{ responseCode: string; responseMessage: string; data: any; }>(`http://localhost/api/tasks/${taskId}`)
+    this.http.delete<{ responseCode: string; responseMessage: string; data: any; }>(`http://localhost:8080/api/tasks/${taskId}`)
       .subscribe(
         response => {
           if (response.responseCode == '00') {
@@ -201,27 +206,27 @@ export class GetTaskComponent {
   }
 
   getTimeliness(task: any): 'On Time' | 'Overdue' | 'Due' {
-  if (!task.taskDueDate) return 'Due';
+    if (!task.taskDueDate) return 'Due';
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  const due = new Date(task.taskDueDate);
-  due.setHours(0, 0, 0, 0);
+    const due = new Date(task.taskDueDate);
+    due.setHours(0, 0, 0, 0);
 
-  // 1. Completed tasks are always "On Time"
-  if (task.taskStatus === 'COMPLETED') {
-    return 'On Time';
+    // 1. Completed tasks are always "On Time"
+    if (task.taskStatus === 'COMPLETED') {
+      return 'On Time';
+    }
+
+    // 2. If due date is before today, and not completed
+    if (due.getTime() < today.getTime()) {
+      return 'Overdue';
+    }
+
+    // 3. Due today or in future, and not completed
+    return 'Due';
   }
-
-  // 2. If due date is before today, and not completed
-  if (due.getTime() < today.getTime()) {
-    return 'Overdue';
-  }
-
-  // 3. Due today or in future, and not completed
-  return 'Due';
-}
 
 
 
@@ -236,6 +241,10 @@ export class GetTaskComponent {
       (task.taskStatus && task.taskStatus.toLowerCase().includes(lower)) ||
       (task.taskId && task.taskId.toLowerCase().includes(lower))
     );
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
 }
